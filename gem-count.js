@@ -5,8 +5,6 @@ promise = require('when');
 
 request = require('request');
 
-module.exports = count;
-
 count = function(user) {
   var api, deferred, fetch, getUrl, process;
   api = 'https://rubygems.org/api/v1/owners/:user/gems.json';
@@ -24,11 +22,18 @@ count = function(user) {
       uri: url
     }, process);
   };
-  process = function(err, res, body) {
+  process = function(error, res, body) {
     var gems;
-    gems = JSON.parse(body);
-    return deferred.resolve(gems.length || 0);
+    if (error || body.charAt(0) !== '[') {
+      return deferred.reject(error || body);
+    } else {
+      gems = JSON.parse(body);
+      count = gems.length || 0;
+      return deferred.resolve(count);
+    }
   };
   fetch();
   return deferred.promise;
 };
+
+module.exports = count;

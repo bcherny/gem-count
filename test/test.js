@@ -3,19 +3,34 @@ var get;
 
 get = require('../gem-count');
 
-exports.github = {
-  success: function(test) {
+exports.Gem = {
+  zero: function(test) {
     var err, fn;
     test.expect(1);
     fn = function(count) {
-      test.equals(count, 1);
+      test.equals(count, 0);
       return test.done();
     };
     err = function() {
       test.ok(false);
       return test.done();
     };
-    return get('demo').then(fn, err);
+    return get('test').then(fn, err);
+  },
+  success: function(test) {
+    var err, fn;
+    test.expect(1);
+    fn = function(count) {
+      var isMoreThan10;
+      isMoreThan10 = count > 10;
+      test.equals(isMoreThan10, true);
+      return test.done();
+    };
+    err = function() {
+      test.ok(false);
+      return test.done();
+    };
+    return get('chriseppstein').then(fn, err);
   },
   error: function(test) {
     var fn;
@@ -25,24 +40,5 @@ exports.github = {
       return test.done();
     };
     return get('ajkldanjkndjklfndjfnjkdsnfjrnfjkdndjkvnifsdvnfjkvnsrifrifnsermnerjifnerjfnjr').then((function() {}), fn, (function() {}));
-  },
-  progress: function(test) {
-    var called, done, err, fn;
-    test.expect(1);
-    called = 0;
-    fn = function() {
-      return ++called;
-    };
-    done = function(total) {
-      var expected;
-      expected = Math.ceil(total / 100);
-      test.equals(called, expected);
-      return test.done();
-    };
-    err = function() {
-      test.ok(false);
-      return test.done();
-    };
-    return get('isaacs').then(done, err, fn);
   }
 };

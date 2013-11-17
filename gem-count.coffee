@@ -3,10 +3,6 @@
 promise = require 'when'
 request = require 'request'
 
-# export
-
-module.exports = count
-
 # module!
 
 count = (user) ->
@@ -25,12 +21,25 @@ count = (user) ->
 		, process
 
 	# process response
-	process = (err, res, body) ->
-		gems = JSON.parse body
-		deferred.resolve gems.length or 0
+	process = (error, res, body) ->
+
+		# hacky, as the API doesn't return proper HTTP status codes >:(
+		if error or body.charAt(0) isnt '['
+
+			deferred.reject error or body
+
+		else
+
+			gems = JSON.parse body
+			count = gems.length or 0
+			deferred.resolve count
 
 	# do it!
 	fetch()
 
 	# return
 	deferred.promise
+
+# export
+
+module.exports = count

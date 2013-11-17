@@ -11,16 +11,13 @@ getGems = require 'gem-count'
 
 success = (count) -> ...
 error = (err) -> ...
-progress = (countSoFar) -> ...
 
-getGems 'someUserName', success, error, progress
+getGems 'someUserName', success, error
 ```
 
 ## Features
 
 - Uses promises
-- Supports paginated responses
-- Supports `progress` for paginated responses
 
 ## Supported environments
 

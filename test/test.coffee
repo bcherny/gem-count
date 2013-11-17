@@ -1,21 +1,35 @@
 get = require '../gem-count'
 
-exports.github =
+exports.Gem =
 
-	success: (test) ->
+	zero: (test) ->
 
 		test.expect 1
 
 		fn = (count) ->
-			test.equals count, 1
+			test.equals count, 0
 			test.done()
 
 		err = ->
 			test.ok false
 			test.done()
 
-		# username has 1 repo
-		get('demo').then fn, err
+		get('test').then fn, err
+
+	success: (test) ->
+
+		test.expect 1
+
+		fn = (count) ->
+			isMoreThan10 = count > 10
+			test.equals isMoreThan10, true
+			test.done()
+
+		err = ->
+			test.ok false
+			test.done()
+
+		get('chriseppstein').then fn, err
 
 	error: (test) ->
 
@@ -27,24 +41,3 @@ exports.github =
 
 		# username doesn't exist and should throw an error
 		get('ajkldanjkndjklfndjfnjkdsnfjrnfjkdndjkvnifsdvnfjkvnsrifrifnsermnerjifnerjfnjr').then (->), fn, (->)
-
-	progress: (test) ->
-
-		test.expect 1
-
-		called = 0
-
-		fn = ->
-			++called
-
-		done = (total) ->
-			expected = Math.ceil total/100
-			test.equals called, expected
-			test.done()
-
-		err = ->
-			test.ok false
-			test.done()
-
-		# has >300 repos
-		get('isaacs').then done, err, fn
