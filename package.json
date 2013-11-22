@@ -33,7 +33,6 @@
     "url": "https://github.com/eighttrackmind/gem-count/issues"
   },
   "dependencies": {
-    "github": "~0.1.12",
     "when": "~2.6.0",
     "request": "~2.27.0"
   },
